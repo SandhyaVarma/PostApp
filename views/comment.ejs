@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>Products</title>
+
+    <style>
+      #name{
+        text-transform: capitalize;
+      }
+      #profile{
+         width: 200px;
+         height: 200px;
+         object-fit: cover;
+       }
+   </style>
+  </head>
+  
+  <body>
+   
+     <div class="container mb-3 my-4">
+      <nav class="navbar navbar-light px-4 py-1" style="background-color: #e3f2fd;">
+        <h3 class='mb-3'>PostApp</h3>
+        <div id="buttons">
+          <a href="/profile" class="btn btn-dark">My Posts</a>
+          <a href="/create" class="btn btn-primary">Create Post</a>
+          <a href="/logout" class="btn btn-danger">Logout</a>
+         </div>
+      </nav>
+     </div>
+
+     <div class="container jumbotron text-center">
+      <h3 id= "name" class='mb-3'>Hello <%= userDets.username %> </h3>
+       <img class="rounded-circle mb-3" id="profile" src="../images/uploads/<%= userDets.profilepic[userDets.profilepic.length -1] %>" alt=""> <br>
+
+     </div>
+
+     <div class="album py-5 bg-light">
+      <div class="container ">
+        <div class="row card mb-4 box-shadow" style="width: 30rem; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;">
+          <h5 class='my-3 mx-3'><%= post.postuser.username %> </h5>
+          <img class="card-img-top" style="height: 300px; object-fit: cover;" src="<%= post.imageurl %>" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text"><%=post.caption %></p>
+                <a href="/like/<%= post._id %>" style="text-decoration: none; color: black;"><i style="font-size:2rem" class="ri-thumb-up-line"></i></a>
+                <h6> <%= post.like.length %>Like</h6>
+             <button class="btn btn-dark"><a href="/follow/<%= post._id %>" style="text-decoration: none; color: white;">Followers <%= post.follow.length %></a></button>
+              
+
+                <form action="/comment/<%= post._id %>" method="post">
+                  <div class="form-floating input-group d-flex align-items-center mt-3">
+                    <textarea name="comment"class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                    <label for="floatingTextarea">Comments</label>
+                    <input type="submit"  value="comment" class="btn btn-secondary mx-1" >
+                  </div>
+              </form>
+                   <% if( comment.length >0 ){ %>
+                        <%  comment.forEach(function(cmnt){ %>
+                              <b><%= cmnt.writer.username %></b> <%= cmnt.comment %> <br>
+                              <div class="container d-flex align-items-center">
+                                <a href="/likecmnt/<%= cmnt._id %>" style="text-decoration: none; color: black;"><i style="font-size:2rem" class="ri-thumb-up-line"></i></a>
+                                 <h6 class="mx-1"> <%= cmnt.likes.length %>Like</h6>
+                              </div>
+                         <% }) %>
+                 <% } else{ %>
+                  no comments yet !
+                <% }%>
+                   
+              </div>
+            </div>
+          </div>
+             
+    
+    
+      
+ <% include ./partials/footer.ejs %>
